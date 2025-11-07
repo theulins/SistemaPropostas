@@ -1,0 +1,20 @@
+# Dependências
+node_modules/
+
+# Logs e arquivos temporários
+*.log
+backend/logs/
+backend/backend/logs/
+
+# Configurações sensíveis
+.env
+backend/.env
+backend/.env.*
+
+# Artefatos de build
+frontend/dist/
+backend/dist/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
