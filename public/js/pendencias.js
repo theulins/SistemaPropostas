@@ -1,4 +1,4 @@
-import { initializePage, authFetch } from './common.js';
+import { initializePage, authFetch, showError, showSuccess, promptText } from './common.js';
 
 const tableBody = document.getElementById('pending-table');
 const filterForm = document.getElementById('pending-filter');
@@ -69,23 +69,37 @@ async function approveRow(row) {
       }),
     });
     row.remove();
+    showSuccess('Pendência aprovada com sucesso.');
   } catch (error) {
-    alert(error.message);
+    showError(error.message);
   }
 }
 
 async function rejectRow(row) {
   const companyId = row.dataset.id;
-  const reason = prompt('Informe o motivo da reprovação:');
-  if (reason === null) return;
+  const reason = await promptText({
+    title: 'Motivo da reprovação',
+    text: 'Descreva o motivo para reprovar a pendência.',
+    inputLabel: 'Motivo',
+    inputPlaceholder: 'Informe o motivo',
+    confirmButtonText: 'Enviar',
+    inputValidator: (value) => {
+      if (!value || !value.trim()) {
+        return 'Informe um motivo para reprovar.';
+      }
+      return undefined;
+    },
+  });
+  if (!reason) return;
   try {
     await authFetch('/empresas/pending/reject', {
       method: 'POST',
       body: JSON.stringify({ company_id: Number(companyId), reason }),
     });
     row.remove();
+    showSuccess('Pendência reprovada.');
   } catch (error) {
-    alert(error.message);
+    showError(error.message);
   }
 }
 

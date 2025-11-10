@@ -19,11 +19,16 @@ Aplicação completa (frontend estático + backend Node/Express + MySQL) para ge
 
 ## Configuração do banco
 
-1. Crie um banco de dados (ex.: `sistema_propostas`).
-2. Execute o script [`server/db/schema.sql`](server/db/schema.sql) para criar tabelas e sementes:
-   - Usuário admin: `admin@empresa.com` / `admin123`
-   - Configurações iniciais de tema e taxa
-   - Empresas pendentes/ativas para testes
+1. Crie um banco de dados vazio (ex.: `sistema_propostas`).
+2. Dentro da pasta `server`, rode as migrations:
+
+   ```bash
+   npm run migrate
+   ```
+
+   - O comando cria todas as tabelas necessárias.
+   - Um usuário admin é criado/atualizado automaticamente (`admin@empresa.com`). A senha padrão é `admin123`, mas pode ser sobrescrita definindo a variável `ADMIN_DEFAULT_PASSWORD` no `.env` antes de rodar a migration.
+   - Configurações iniciais e dados de exemplo para empresas são inseridos caso o banco esteja vazio.
 
 ## Backend
 
@@ -31,9 +36,13 @@ Aplicação completa (frontend estático + backend Node/Express + MySQL) para ge
 cd server
 cp ../.env.example .env
 # edite credenciais do banco, JWT_SECRET etc.
+# (Opcional) defina ADMIN_DEFAULT_PASSWORD antes de rodar migrations
 
 # instalar dependências
 npm install
+
+# criar/atualizar estrutura do banco
+npm run migrate
 
 # iniciar o servidor
 npm start
@@ -43,9 +52,14 @@ O servidor sobe em `http://localhost:3001` por padrão e expõe os endpoints RES
 
 ## Frontend
 
-Sirva a pasta `public` por HTTP (ex.: `npx serve public`, nginx, Apache ou o servidor estático do próprio framework).
+A API já expõe os arquivos estáticos contidos em `public`. Após iniciar o servidor (`npm start`), acesse:
 
-Página inicial de login: `http://localhost:3000/login.html` (ajuste conforme host utilizado).
+- `http://localhost:3001/` → redireciona para `login.html`
+- `http://localhost:3001/dashboard.html`
+- `http://localhost:3001/pendencias.html`
+
+Caso deseje servir o frontend separadamente (por exemplo, em outro domínio), basta disponibilizar o conteúdo da pasta `public` e
+configurar o proxy/CORS apontando para o backend em `http://localhost:3001`.
 
 ### Login seed
 

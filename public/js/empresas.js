@@ -1,4 +1,4 @@
-import { initializePage, authFetch } from './common.js';
+import { initializePage, authFetch, showSuccess, showError } from './common.js';
 
 const searchForm = document.getElementById('search-form');
 const companiesTable = document.getElementById('companies-table');
@@ -197,13 +197,13 @@ async function init() {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      alert('Empresa cadastrada com sucesso.');
+      showSuccess('Empresa cadastrada com sucesso.');
       companyForm.reset();
       clearSignaturePad();
       await loadCompanies();
       showView('lista');
     } catch (error) {
-      alert(error.message);
+      showError(error.message);
     }
   });
 }

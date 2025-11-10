@@ -1,4 +1,11 @@
-import { initializePage, authFetch, applyTheme } from './common.js';
+import {
+  initializePage,
+  authFetch,
+  applyTheme,
+  showSuccess,
+  showError,
+  confirmAction,
+} from './common.js';
 
 const designForm = document.getElementById('design-form');
 const resetButton = document.getElementById('reset-design');
@@ -81,12 +88,19 @@ function startEdit(row) {
 
 async function deleteUser(row) {
   const id = Number(row.dataset.id);
-  if (!confirm('Confirma excluir este usuário?')) return;
+  const confirmed = await confirmAction({
+    title: 'Deseja excluir este usuário?',
+    text: 'Esta ação não poderá ser desfeita.',
+    icon: 'warning',
+    confirmButtonText: 'Excluir',
+  });
+  if (!confirmed) return;
   try {
     await authFetch(`/users/${id}`, { method: 'DELETE' });
     row.remove();
+    showSuccess('Usuário removido com sucesso.');
   } catch (error) {
-    alert(error.message);
+    showError(error.message);
   }
 }
 
@@ -112,9 +126,9 @@ async function init() {
         method: 'PUT',
         body: JSON.stringify(payload),
       });
-      alert('Preferências salvas.');
+      showSuccess('Preferências salvas.');
     } catch (error) {
-      alert(error.message);
+      showError(error.message);
     }
   });
 
@@ -128,8 +142,9 @@ async function init() {
         method: 'PUT',
         body: JSON.stringify({ theme_preference: 'system', primary: '#4f86ff' }),
       });
+      showSuccess('Tema restaurado para o padrão.');
     } catch (error) {
-      alert(error.message);
+      showError(error.message);
     }
   });
 
@@ -152,12 +167,13 @@ async function init() {
           });
           await loadUsers();
           resetUserForm();
+          showSuccess('Usuário atualizado com sucesso.');
         } catch (error) {
-          alert(error.message);
+          showError(error.message);
         }
       } else {
         if (!payload.password) {
-          alert('Informe uma senha para o novo usuário.');
+          await showError('Informe uma senha para o novo usuário.', 'Dados incompletos');
           return;
         }
         try {
@@ -167,8 +183,9 @@ async function init() {
           });
           await loadUsers();
           resetUserForm();
+          showSuccess('Usuário cadastrado com sucesso.');
         } catch (error) {
-          alert(error.message);
+          showError(error.message);
         }
       }
     });

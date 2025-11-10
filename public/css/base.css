@@ -1,6 +1,6 @@
 :root { --primary: #4f86ff; --bg:#0b1020; --bg2:#070a17; --text:#e9eefc; --muted:#bfc9ee; }
 :root.light { --bg:#f7f8fc; --bg2:#ffffff; --text:#0b1020; --muted:#445; }
-*{box-sizing:border-box} html,body{height:100%} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text)}
+*{box-sizing:border-box} html,body{height:100%} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),var(--bg2));background-attachment:fixed;background-repeat:no-repeat;background-size:cover;min-height:100vh;color:var(--text)}
 a{color:inherit} .topbar{display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid #ffffff14;backdrop-filter:blur(6px);position:sticky;top:0;background:#0a0e1a99}
 .brand{font-weight:800} .tabs{display:flex;gap:10px;margin-left:8px} .tab{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px} .tab.active{background:#ffffff14;color:var(--text)}
 .userbox{margin-left:auto;display:flex;gap:8px;align-items:center} .ghost{background:transparent;border:1px solid #ffffff33;color:var(--text);border-radius:10px;padding:8px 12px;cursor:pointer}

@@ -111,6 +111,106 @@ export function setupLogout() {
   }
 }
 
+function ensureSwal() {
+  if (!window.Swal) {
+    console.error('SweetAlert2 não foi carregado.');
+    return false;
+  }
+  return true;
+}
+
+export function showError(message, title = 'Algo deu errado') {
+  if (!ensureSwal()) {
+    console.error(message);
+    return Promise.resolve();
+  }
+  return Swal.fire({
+    icon: 'error',
+    title,
+    text: message,
+    confirmButtonText: 'Entendi',
+  });
+}
+
+export function showSuccess(message, title = 'Tudo certo!') {
+  if (!ensureSwal()) {
+    console.info(message);
+    return Promise.resolve();
+  }
+  return Swal.fire({
+    icon: 'success',
+    title,
+    text: message,
+    confirmButtonText: 'Fechar',
+  });
+}
+
+export async function confirmAction({
+  title,
+  text,
+  icon = 'warning',
+  confirmButtonText = 'Confirmar',
+  cancelButtonText = 'Cancelar',
+} = {}) {
+  if (!ensureSwal()) {
+    return window.confirm(text || title || '');
+  }
+  const result = await Swal.fire({
+    title,
+    text,
+    icon,
+    showCancelButton: true,
+    focusCancel: true,
+    confirmButtonText,
+    cancelButtonText,
+  });
+  return result.isConfirmed;
+}
+
+export async function promptText({
+  title,
+  text,
+  inputLabel,
+  inputPlaceholder,
+  confirmButtonText = 'Confirmar',
+  cancelButtonText = 'Cancelar',
+  icon = 'question',
+  inputValidator,
+} = {}) {
+  if (!ensureSwal()) {
+    const value = window.prompt(text || title || '');
+    if (!value) {
+      return null;
+    }
+    if (inputValidator) {
+      const validationMessage = inputValidator(value);
+      if (validationMessage) {
+        console.warn(validationMessage);
+        return null;
+      }
+    }
+    return value;
+  }
+
+  const result = await Swal.fire({
+    title,
+    text,
+    input: 'text',
+    inputLabel,
+    inputPlaceholder,
+    icon,
+    showCancelButton: true,
+    focusCancel: true,
+    confirmButtonText,
+    cancelButtonText,
+    inputValidator,
+  });
+  if (!result.isConfirmed) {
+    return null;
+  }
+  return result.value;
+}
+
 export async function initializePage(activePage) {
   const profile = await ensureAuthenticated();
   if (!profile) return null;

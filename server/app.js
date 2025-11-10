@@ -16,6 +16,7 @@ const __dirname = path.dirname(__filename);
 const uploadsDir = process.env.UPLOADS_DIR
   ? path.resolve(process.env.UPLOADS_DIR)
   : path.join(__dirname, 'uploads');
+const publicDir = path.join(__dirname, '..', 'public');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -40,6 +41,12 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use('/uploads', express.static(uploadsDir));
+app.use(express.static(publicDir));
+
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(publicDir, 'login.html'));
+});
+
 app.use('/api', router);
 
 app.use(errorHandler);
