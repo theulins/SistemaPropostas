@@ -1,2 +1,0 @@
-import express from 'express'; import { verifyToken,requireRole } from '../middleware/authMiddleware.js'; import { exportCompaniesCSV,exportCompaniesXLSX } from '../controllers/exportController.js';
-const r=express.Router(); r.get('/companies.csv',verifyToken,requireRole(['admin']),exportCompaniesCSV); r.get('/companies.xlsx',verifyToken,requireRole(['admin']),exportCompaniesXLSX); export default r;

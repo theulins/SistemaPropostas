@@ -1,2 +1,0 @@
-import express from 'express'; import { verifyToken,requireRole } from '../middleware/authMiddleware.js'; import { createAssociate,listAssociates,deleteAssociate } from '../controllers/associatesController.js';
-const r=express.Router(); r.post('/',verifyToken,requireRole(['admin','editor']),createAssociate); r.get('/:companyId',verifyToken,listAssociates); r.delete('/:id',verifyToken,requireRole(['admin','editor']),deleteAssociate); export default r;

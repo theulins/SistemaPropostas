@@ -1,4 +1,0 @@
-import express from 'express'; import { verifyToken,requireRole } from '../middleware/authMiddleware.js'; import { createCompany,searchCompanies,listCompanies,updateCompany,approveCompany,rejectCompany,inactivateCompany } from '../controllers/companiesController.js';
-const r=express.Router(); r.post('/create',verifyToken,requireRole(['admin','comercial']),createCompany); r.get('/search',verifyToken,searchCompanies); r.get('/list',verifyToken,listCompanies);
-r.put('/:id',verifyToken,requireRole(['admin','editor']),updateCompany); r.post('/:id/approve',verifyToken,requireRole(['admin','editor']),approveCompany);
-r.post('/:id/reject',verifyToken,requireRole(['admin','editor']),rejectCompany); r.post('/:id/inactivate',verifyToken,requireRole(['admin','editor']),inactivateCompany); export default r;

@@ -1,1 +1,0 @@
-CREATE TABLE IF NOT EXISTS settings (`key` VARCHAR(64) PRIMARY KEY,`value` TEXT);
