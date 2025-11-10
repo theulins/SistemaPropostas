@@ -1,1 +1,104 @@
-.kpi{font-size:2rem;font-weight:800} canvas{max-width:100%}
+/* KPI e elementos locais do dashboard */
+.kpi { font-size: 2rem; font-weight: 800; }
+canvas { max-width: 100%; }
+
+/* -------- Card de Comissões (mensal) -------- */
+.commission-card{
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  max-width: 520px; /* card pequeno */
+}
+
+.commission-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.commission-head h4{
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.commission-controls{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.commission-controls input[type="month"],
+.commission-controls input[type="number"]{
+  padding: .45rem .55rem;
+  border: 1px solid var(--border,#e5e7eb);
+  border-radius: .5rem;
+  background: var(--surface,#fff);
+  color: inherit;
+  min-width: 11ch;
+}
+
+.commission-controls .rate{
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.commission-controls .rate span{
+  font-size: .9rem;
+  color: var(--muted,#6b7280);
+}
+
+.btn.tiny{
+  padding: .45rem .7rem;
+  border-radius: .5rem;
+  border: 1px solid transparent;
+  background: var(--accent,#3b82f6);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn.tiny:hover{ filter: brightness(.96); }
+
+.commission-body{
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  background: var(--surface,#fff);
+  border: 1px solid var(--border,#eef0f2);
+  border-radius: .75rem;
+  padding: .9rem;
+}
+
+.commission-kpi{
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  min-width: 0;
+}
+
+.commission-kpi .label{
+  font-size: .9rem;
+  color: var(--muted,#6b7280);
+}
+
+.commission-kpi .value{
+  font-size: 1.35rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.divider{
+  width: 1px;
+  background: var(--border,#e5e7eb);
+}
+
+.muted{ color: var(--muted, #6b7280); font-size:.85rem; }
+
+@media (max-width: 600px){
+  .commission-card{ max-width: 100%; }
+  .commission-body{ flex-direction: column; gap: .6rem; }
+  .divider{ height: 1px; width: 100%; }
+}

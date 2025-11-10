@@ -1,8 +1,18 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Empresas • Sistema de Propostas</title>
-<link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/empresas.css">
-</head><body>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/empresas.css">
+<style>
+  /* Fallback rápido caso css/empresas.css não carregue */
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+  @media(max-width:800px){.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
 <header class="topbar">
   <div class="brand">Sistema de Propostas</div>
   <nav class="tabs">
@@ -13,20 +23,237 @@
   </nav>
   <div class="userbox"><button class="ghost" onclick="logout()">Sair</button></div>
 </header>
+
 <main class="wrap">
-  <section class="panel">
-    <h3>Pesquisar</h3>
-    <div class="grid2">
-      <input id="q" placeholder="Nome/CNPJ/Cidade">
-      <select id="status"><option value="">Todos</option><option value="pendente">Pendente</option><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select>
+  <!-- LINHA SUPERIOR: DOIS CARDS LADO A LADO -->
+  <section class="row2">
+    <!-- CARD PESQUISAR -->
+    <div class="panel" id="cardPesquisar">
+      <h3>Pesquisar</h3>
+      <div class="grid2">
+        <input id="q" placeholder="Nome/CNPJ/Cidade">
+        <select id="status">
+          <option value="">Todos</option>
+          <option value="pendente">Pendente</option>
+          <option value="ativo">Ativo</option>
+          <option value="inativo">Inativo</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="primary" id="btnBuscar">Buscar</button>
+        <button id="btnListar">Listar recentes</button>
+      </div>
     </div>
-    <button class="primary" onclick="buscar()">Buscar</button>
-    <button onclick="listar()">Listar recentes</button>
+
+    <!-- CARD NOVA EMPRESA -->
+    <div class="panel" id="cardNovaEmpresa">
+      <h3>Nova Empresa</h3>
+      <p class="muted">Crie uma empresa e preencha os dados da proposta. O bloco abaixo alterna para o formulário.</p>
+      <div class="actions">
+        <button class="primary" id="btnNovaEmpresa">+ Nova empresa</button>
+        <button class="ghost" id="btnVoltarLista" style="display:none">← Voltar para lista</button>
+      </div>
+      <small class="muted">Inclui campos de valores (para comissão) e assinatura desenhada.</small>
+    </div>
   </section>
-  <section class="panel">
-    <h3>Empresas</h3>
-    <table id="tabela"><thead><tr><th>ID</th><th>Nome</th><th>CNPJ</th><th>Cidade</th><th>UF</th><th>Setor</th><th>Status</th><th>Atualizado</th></tr></thead><tbody><tr><td colspan="8">—</td></tr></tbody></table>
+
+  <!-- BLOCO INFERIOR: LISTA (padrão) OU FORMULÁRIO (ao clicar "Nova empresa") -->
+  <section class="panel" id="areaDinamica">
+    <!-- LISTA -->
+    <div id="listaWrap">
+      <h3>Empresas</h3>
+      <div class="table-wrap">
+        <table id="tabela">
+          <thead>
+            <tr>
+              <th>ID</th><th>Nome</th><th>CNPJ</th><th>Cidade</th><th>UF</th><th>Setor</th><th>Status</th><th>Atualizado</th>
+            </tr>
+          </thead>
+          <tbody><tr><td colspan="8">—</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FORM NOVA EMPRESA -->
+    <form id="formWrap" style="display:none">
+      <h3>Cadastro de Empresa (Proposta)</h3>
+
+      <!-- Identificação -->
+      <fieldset>
+        <legend>Identificação</legend>
+        <div class="grid2">
+          <label>Razão Social
+            <input name="corporate_name" required>
+          </label>
+          <label>Denominação Comercial
+            <input name="fantasy_name" required>
+          </label>
+        </div>
+        <div class="grid3">
+          <label>Endereço
+            <input name="address">
+          </label>
+          <label>CEP
+            <input name="zip" inputmode="numeric" pattern="\\d{5}-?\\d{3}" placeholder="00000-000">
+          </label>
+          <label>E-mail
+            <input type="email" name="email">
+          </label>
+        </div>
+        <div class="grid3">
+          <label>Instagram
+            <input name="instagram" placeholder="@usuario">
+          </label>
+          <label>Telefone
+            <input name="phone">
+          </label>
+          <label>Cel/WhatsApp
+            <input name="whatsapp">
+          </label>
+        </div>
+        <div class="grid3">
+          <label>Cidade
+            <input name="city">
+          </label>
+          <label>UF
+            <input name="state" maxlength="2" placeholder="PR">
+          </label>
+          <label>CNPJ
+            <input name="cnpj" placeholder="00.000.000/0000-00">
+          </label>
+        </div>
+        <div class="grid3">
+          <label>Inscrição Estadual
+            <input name="ie">
+          </label>
+          <label>Ramo de Atividade
+            <input name="business_activity">
+          </label>
+          <label>Data de Fundação
+            <input type="date" name="foundation_date">
+          </label>
+        </div>
+        <div class="grid3">
+          <label>Qtd Funcionários
+            <input type="number" name="employees_qty" min="0" step="1">
+          </label>
+          <label>Setor
+            <input name="sector">
+          </label>
+          <label>Escritório de Contabilidade
+            <input name="accounting_office">
+          </label>
+        </div>
+        <div class="grid2">
+          <label>Indicação de
+            <input name="referred_by">
+          </label>
+          <label>Observação
+            <input name="note">
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Sócios/Diretores -->
+      <fieldset>
+        <legend>Sócios/Diretores</legend>
+        <div id="socioList" class="rep-list">
+          <div class="rep-item">
+            <label>Nome <input name="partners[0].name"></label>
+            <label>CPF <input name="partners[0].cpf" placeholder="000.000.000-00"></label>
+            <button type="button" class="ghost danger remove" aria-label="Remover" style="display:none">Remover</button>
+          </div>
+        </div>
+        <button type="button" class="ghost" id="addPartner">+ Adicionar sócio</button>
+      </fieldset>
+
+      <!-- Serviços contratados -->
+      <fieldset>
+        <legend>Serviços contratados</legend>
+        <div class="chk-grid">
+          <label><input type="checkbox" name="services.spc"> SPC</label>
+          <label><input type="checkbox" name="services.nfe"> NF-e</label>
+          <label><input type="checkbox" name="services.nfce"> NFC-e</label>
+          <label><input type="checkbox" name="services.mdfe"> MDF-e</label>
+          <label><input type="checkbox" name="services.cte"> CT-e</label>
+          <label><input type="checkbox" name="services.cfe"> CF-e</label>
+        </div>
+        <label>Observação sobre serviços
+          <input name="services_note">
+        </label>
+      </fieldset>
+
+      <!-- Financeiro -->
+      <fieldset>
+        <legend>Financeiro</legend>
+        <div class="grid3">
+          <label>Tipo
+            <select name="plan_type">
+              <option value="">—</option>
+              <option value="mensal">Mensal</option>
+              <option value="trimestral">Trimestral</option>
+              <option value="semestral">Semestral</option>
+              <option value="anual">Anual</option>
+            </select>
+          </label>
+          <label>Valor (R$)
+            <input type="number" name="value" min="0" step="0.01" placeholder="0,00" inputmode="decimal">
+          </label>
+          <label>Vencimento
+            <input type="date" name="due_date">
+          </label>
+        </div>
+        <div class="grid3">
+          <label>Taxa de Comissão (%)
+            <input type="number" name="commission_rate" min="0" step="0.01" placeholder="10,00">
+          </label>
+          <label>Isenta de Comissão?
+            <select name="commission_exempt">
+              <option value="0">Não</option>
+              <option value="1">Sim</option>
+            </select>
+          </label>
+          <label>Status
+            <select name="status">
+              <option value="pendente">Pendente</option>
+              <option value="ativo" selected>Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Divulgação -->
+      <fieldset>
+        <legend>Autorização de divulgação</legend>
+        <div class="chk-grid">
+          <label><input type="checkbox" name="promo.site"> Site da ACIU</label>
+          <label><input type="checkbox" name="promo.whatsapp"> Grupo de WhatsApp</label>
+          <label><input type="checkbox" name="promo.email"> E-mail marketing</label>
+        </div>
+      </fieldset>
+
+      <!-- Assinatura desenhada -->
+      <fieldset>
+        <legend>Assinatura</legend>
+        <div class="sig-wrap">
+          <canvas id="sigCanvas" width="600" height="160"></canvas>
+          <div class="sig-tools">
+            <button type="button" class="ghost" id="sigClear">Limpar</button>
+          </div>
+        </div>
+        <input type="hidden" name="signature_data_url" id="signatureData">
+      </fieldset>
+
+      <div class="actions end">
+        <button type="button" id="cancelarForm" class="ghost">Cancelar</button>
+        <button type="submit" class="primary">Salvar</button>
+      </div>
+    </form>
   </section>
 </main>
+
 <script src="js/empresas.js"></script>
-</body></html>
+</body>
+</html>
+  

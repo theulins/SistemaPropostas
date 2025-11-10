@@ -1,0 +1,72 @@
+/* dois cards superiores */
+.row2{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* botões e helpers */
+.panel .actions{
+  display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;
+}
+.panel .actions.end{ justify-content: flex-end; }
+.primary{ background: var(--accent,#3b82f6); color:#fff; border:1px solid transparent; padding:.6rem .9rem; border-radius:.6rem; font-weight:600; cursor:pointer; }
+.primary:hover{ filter:brightness(.96); }
+.ghost{ background:transparent; border:1px solid var(--border,#e5e7eb); padding:.6rem .9rem; border-radius:.6rem; cursor:pointer; }
+.ghost.danger{ border-color:#ef4444; color:#ef4444; }
+.muted{ color: var(--muted,#6b7280); }
+
+/* lista */
+.table-wrap{ overflow:auto; }
+table{ width:100%; border-collapse:collapse; font-size:.95rem; }
+thead th{ text-align:left; border-bottom:1px solid var(--border,#e5e7eb); padding:.6rem .5rem; white-space:nowrap; }
+tbody td{ border-bottom:1px solid var(--border,#f0f0f0); padding:.6rem .5rem; }
+
+/* formulário e grids */
+form fieldset{
+  border:1px solid var(--border,#eef0f2);
+  border-radius:.75rem;
+  padding:1rem;
+  margin-top:1rem;
+}
+form legend{ font-weight:700; padding:0 .25rem; }
+label{ display:flex; flex-direction:column; gap:.25rem; }
+input, select{
+  padding:.55rem .6rem;
+  border:1px solid var(--border,#e5e7eb);
+  border-radius:.5rem;
+  background: var(--surface,#fff);
+  color: inherit;
+  min-width: 0;
+}
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; }
+.chk-grid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:.5rem 1rem; margin-bottom:.5rem; }
+
+.rep-list{ display:flex; flex-direction:column; gap:.5rem; }
+.rep-item{ display:grid; grid-template-columns: 1fr 260px auto; gap:.5rem; align-items:end; }
+.rep-item .remove{ justify-self:start; }
+
+.sig-wrap{ display:flex; flex-direction:column; gap:.5rem; }
+#sigCanvas{
+  width:100%; max-width:100%; background:#fff; border:1px dashed var(--border,#dcdfe3); border-radius:.5rem;
+  touch-action: none;
+}
+.sig-tools{ display:flex; gap:.5rem; }
+
+/* responsivo */
+@media (max-width: 1000px){
+  .chk-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 800px){
+  .row2{ grid-template-columns:1fr; }        /* <— empilha os dois cards no mobile */
+  .grid3{ grid-template-columns:1fr 1fr; }
+  .rep-item{ grid-template-columns: 1fr 1fr auto; }
+}
+@media (max-width: 520px){
+  .grid2{ grid-template-columns:1fr; }
+  .grid3{ grid-template-columns:1fr; }
+  .chk-grid{ grid-template-columns: 1fr; }
+  .rep-item{ grid-template-columns: 1fr; }
+}

@@ -1,8 +1,13 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Configurações • Sistema de Propostas</title>
 <link rel="stylesheet" href="css/base.css">
-</head><body>
+<link rel="stylesheet" href="css/configuracoes.css">
+</head>
+<body>
 <header class="topbar">
   <div class="brand">Sistema de Propostas</div>
   <nav class="tabs">
@@ -11,12 +16,99 @@
     <a class="tab" href="pendencias.html">Pendências</a>
     <a class="tab active" href="configuracoes.html">Configurações</a>
   </nav>
-  <div class="userbox"><a class="ghost" href="login.html" onclick="localStorage.clear()">Sair</a></div>
+  <div class="userbox"><button class="ghost" onclick="logout()">Sair</button></div>
 </header>
+
 <main class="wrap">
+  <!-- Linha com dois cards lado a lado -->
+  <section class="grid2">
+    <!-- Preferências de Design -->
+    <div class="panel">
+      <h3>Preferências de Design</h3>
+      <div class="grid2">
+        <label>Tema
+          <select id="themeSelect">
+            <option value="system">Sistema</option>
+            <option value="light">Claro</option>
+            <option value="dark">Escuro</option>
+          </select>
+        </label>
+        <label>Cor Primária
+          <input type="color" id="primaryColor" value="#4f86ff">
+        </label>
+      </div>
+
+      <div class="notice">
+        O tema “Sistema” segue o modo do dispositivo. “Claro” aplica <code>:root.light</code> e “Escuro” usa o padrão do <code>:root</code>.
+      </div>
+
+      <div class="preview">
+        <div class="preview-chip">Exemplo de botão</div>
+        <div class="preview-tag">Tag</div>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="primary" id="saveDesign">Salvar preferências</button>
+        <button class="ghost" id="resetDesign">Restaurar padrão</button>
+      </div>
+    </div>
+
+    <!-- Criar/Editar Usuário -->
+    <div class="panel">
+      <h3>Usuário</h3>
+      <form id="userForm" autocomplete="off">
+        <input type="hidden" name="id" id="userId">
+        <div class="grid2">
+          <label>Nome
+            <input id="userName" name="name" required>
+          </label>
+          <label>E-mail
+            <input id="userEmail" name="email" type="email" required>
+          </label>
+        </div>
+        <div class="grid2">
+          <label>Cargo (role)
+            <select id="userRole" name="role" required>
+              <option value="viewer">viewer</option>
+              <option value="editor">editor</option>
+              <option value="admin">admin</option>
+            </select>
+          </label>
+          <label>Tema preferido
+            <select id="userTheme" name="theme_preference">
+              <option value="system">system</option>
+              <option value="light">light</option>
+              <option value="dark">dark</option>
+            </select>
+          </label>
+        </div>
+        <div class="notice">
+          Para novos usuários, a senha poderá ser enviada/definida pelo backend (ex.: e-mail de convite) ou setada por um admin.
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          <button type="button" class="ghost" id="cancelEdit" style="display:none">Cancelar</button>
+          <button class="primary" type="submit" id="saveUser">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Tabela de Usuários -->
   <section class="panel">
-    <h3>Preferências</h3>
-    <p>Após login, esta página aplicará as cores do tema e exibirá CRUD de usuários.</p>
+    <h3>Usuários</h3>
+    <div class="table-wrap">
+      <table id="usersTable">
+        <thead>
+          <tr>
+            <th>ID</th><th>Nome</th><th>E-mail</th><th>Role</th><th>Tema</th><th>Criação</th><th>Atualização</th><th>Ações</th>
+          </tr>
+        </thead>
+        <tbody><tr><td colspan="8">Carregando…</td></tr></tbody>
+      </table>
+    </div>
   </section>
 </main>
-</body></html>
+
+<script src="js/configuracoes.js"></script>
+</body>
+</html>
