@@ -91,3 +91,4 @@ Senha: admin123
 - Empresas → pesquisa/lista, alternância lista/formulário e envio com assinatura desenhada
 - Pendências → edição inline de valor/taxa, aprovação/reprovação removendo linhas
 - Configurações → ajuste de tema/cor + CRUD de usuários (apenas admin)
+---
